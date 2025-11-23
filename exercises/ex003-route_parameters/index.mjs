@@ -1,6 +1,11 @@
 import express from "express";
+
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
 
 // fack database (mock)
 const users = [
@@ -16,16 +21,14 @@ app.get("/", (request, response) => {
 
 // get user by id
 app.get("/api/users/:id", (request, response) => {
-    const id = Number(request.params.id);
-    const user = users.find(u => u.id === id);
+    const {params: id} = request;
+
+    const parsedId = parseInt(id)
+    const user = users.find(u => u.id === parsedId);
 
     if (!user) {
-        return response.status(404).json({ error: "User not found" });
+        return response.sendStatus(404)
     }
 
-    response.json(user);
-});
-
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    return response.json(user);
 });

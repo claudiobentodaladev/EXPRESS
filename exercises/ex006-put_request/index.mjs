@@ -5,8 +5,8 @@ app.use(express.json())
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
-    console.log("server is running!")
-})
+    console.log(`Server running on http://localhost:${PORT}`);
+});
 
 const users = [
     { id: 1, name: "claudio", job: "developer" },
@@ -14,21 +14,18 @@ const users = [
     { id: 3, name: "dala", job: "doctor" },
 ];
 
-app.put('/api/users/:id', (req, res) => {
-    const { body, params: { id } } = req
-    const parsedId = parseInt(id)
+app.put('/api/users/:id', (request, response) => {
+   const { params: { id } } = request
 
-    if (isNaN(parsedId)) {
-        return res.status(400)
-    }
+    const parsedId = parseInt(id)
 
     const indexUserFound = users.findIndex(user => user.id === parsedId)
 
     if (indexUserFound === -1) {
-        return res.sendStatus(400)
+        return response.sendStatus(404)
     }
 
-    users[indexUserFound] = { id: parsedId, ...body }
+    const filteredUsers = users.filter(user => user.id === parsedId)
 
-    return res.sendStatus(200)
+    return response.status(200).json(filteredUsers)
 })

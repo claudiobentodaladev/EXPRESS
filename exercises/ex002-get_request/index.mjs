@@ -1,8 +1,11 @@
 import express from "express";
 
 const app = express()
-
 const PORT = process.env.PORT || 3000
+
+app.listen(PORT, () => {
+    console.log('hi')
+})
 
 app.get('/', (request, response) => {
     response.json({
@@ -32,8 +35,4 @@ app.get('/api/users', (request, response) => {
             job: 'doctor'
         }
     ])
-})
-
-app.listen(PORT, () => {
-    console.log('hi')
 })

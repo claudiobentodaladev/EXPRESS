@@ -2,6 +2,10 @@ import express from "express";
 const app = express();
 const port = 3000;
 
+app.listen(port, () => {
+  console.log(`server running on http://localhost:${port}`);
+});
+
 const users = [
   { id: 1, name: "claudio", job: "developer" },
   { id: 2, name: "bento", job: "nurse" },
@@ -9,26 +13,19 @@ const users = [
 ];
 
 // Route GET to filter user
-app.get("/api/users", (req, res) => {
-  const { filter, value } = req.query;
+app.get("/api/users", (request, response) => {
+  const { query: { filter, value } } = request
 
-  // Check if user is invalid
-  if (!filter || !value) {
-    return res.status(200).json(users);
-  }
+    if (!["name", "job"].includes(filter)) {
+        return response.sendStatus(400)
+    }
 
-  if (!["name", "job"].includes(filter)) {
-    return res.status(400).json({ error: "Invalid filter. Use 'name' or 'job'" });
-  }
+    const indexUserFound = users.findIndex(user => user[filter] === value)
 
-  // Filter users
-  const filteredUsers = users.filter(user =>
-    user[filter].toLowerCase() === value.toLowerCase()
-  );
+    if (indexUserFound === -1) {
+        return response.sendStatus(404)
+    }
 
-  res.json(filteredUsers);
-});
-
-app.listen(port, () => {
-  console.log(`server running on http://localhost:${port}`);
+    const filteredUsers = users.filter(user => user[filter] === value)
+    return response.status(200).json(filteredUsers)
 });

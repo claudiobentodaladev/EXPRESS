@@ -5,8 +5,8 @@ app.use(express.json())
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
-    console.log("server is running!")
-})
+    console.log(`Server running on http://localhost:${PORT}`);
+});
 
 const users = [
     { id: 1, name: "claudio", job: "developer" },
@@ -19,7 +19,7 @@ app.patch('/api/users/:id', (req, res) => {
     const parsedId = parseInt(id)
 
     if (isNaN(parsedId)) {
-        return res.status(400)
+        return res.sendStatus(400)
     }
 
     const indexUserFound = users.findIndex(user => user.id === parsedId)
@@ -28,6 +28,6 @@ app.patch('/api/users/:id', (req, res) => {
         return res.sendStatus(400)
     }
 
-    users[indexUserFound] = {...users[indexUserFound], ...body}
+    users[indexUserFound] = { ...users[indexUserFound], ...body }
     return res.sendStatus(200)
 })
