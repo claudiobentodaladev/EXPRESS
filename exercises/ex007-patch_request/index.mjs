@@ -14,7 +14,7 @@ const users = [
     { id: 3, name: "dala", job: "doctor" },
 ];
 
-app.put('/api/users/:id', (req, res) => {
+app.patch('/api/users/:id', (req, res) => {
     const { body, params: { id } } = req
     const parsedId = parseInt(id)
 
@@ -28,7 +28,6 @@ app.put('/api/users/:id', (req, res) => {
         return res.sendStatus(400)
     }
 
-    users[indexUserFound] = { id: parsedId, ...body }
-
+    users[indexUserFound] = {...users[indexUserFound], ...body}
     return res.sendStatus(200)
 })
