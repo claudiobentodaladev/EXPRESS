@@ -180,5 +180,8 @@ Sharing knowledge helps the entire community grow.
 
 This repository is free for study and learning.
 
-```
-```
+MIT ©claudiobentodaladev
+
+---
+Author: Cláudio Bento Dala
+---
