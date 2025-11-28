@@ -1,6 +1,6 @@
 import express from "express";
 import { validationResult, checkSchema, matchedData } from "express-validator";
-import { createUserSchema } from "./utils/createUserValidatorSchema.mjs";
+import { createUserSchema } from "./utils/validatorSchema.mjs";
 
 const app = express()
 app.use(express.json())
