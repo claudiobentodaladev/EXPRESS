@@ -1,4 +1,4 @@
-export const createUserSchema = {
+export const createUser = {
     name: {
         isString: {
             errorMessage: "name must be a string"
@@ -19,5 +19,23 @@ export const createUserSchema = {
             errorMessage: "name must be a string"
         },
         notEmpty: true
+    }
+}
+
+export const query = {
+    filter: {
+        isString: {
+            errorMessage: "filter must be string"
+        },
+        notEmpty: {
+            errorMessage: "filter must not be empty"
+        },
+        isLength: {
+            options: {
+                min: 3,
+                max: 12
+            },
+            errorMessage: "must be legth between 3-12 character"
+        }
     }
 }
