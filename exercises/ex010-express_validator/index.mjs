@@ -16,6 +16,13 @@ const users = [
     { id: 3, name: "dala", job: "doctor" },
 ];
 
+/*
+EXPRESS-VALIDATOR is used to validate request before manipulate.
+    Main function:
+        -> checkSchema: is used to create schema of request validation.
+        -> validationResult: is used to receive the validation status.
+        -> matchedData: are validated data, recommended to use or manipulate.
+*/
 app.post('/api/users', checkSchema(createUserSchema), (request, response) => {
 
     const result = validationResult(request)
@@ -29,5 +36,4 @@ app.post('/api/users', checkSchema(createUserSchema), (request, response) => {
     users.push(newUser)
 
     return response.status(201).json(newUser)
-}
-)
+})
