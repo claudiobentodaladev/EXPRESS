@@ -11,11 +11,6 @@ app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
 
-app.use((request, response, next) => {
-    console.log(`Method: \"${request.method}\"; Url: \"${request.url}\"`);
-    next();
-});
-
 app.get("/", (request, response) => {
     return response.send("API is working!");
 });
