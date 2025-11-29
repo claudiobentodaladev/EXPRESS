@@ -14,6 +14,7 @@ const users = [
     { id: 3, name: "dala", job: "doctor" },
 ];
 
+//DELETE is used to delete data
 app.delete('/api/users/:id', (req, res) => {
     const { params: { id } } = req
 
