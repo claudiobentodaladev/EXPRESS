@@ -8,7 +8,12 @@ app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
 
-// MIDDLEWARE 
+/* MIDDLEWARE is function that receive data (request) and response, that can:
+    -> Modify: request or response
+    -> Finish a response: (ex.: response.send())
+    -> Delegate the next middleware: next()
+    -> Signal an error: next(err)
+*/
 const handleID = (req, res, next) => {
     const { params: { id } } = req
     const parsedId = parseInt(id)
