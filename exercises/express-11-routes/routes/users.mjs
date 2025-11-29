@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { users } from "../utils/constants.mjs";
 
+//router is used like app in the root
 const router = Router()
 
 router.get('/api/users/', (request, response) => {
