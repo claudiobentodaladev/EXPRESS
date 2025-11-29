@@ -14,6 +14,8 @@ const users = [
     { id: 3, name: "dala", job: "doctor" },
 ];
 
+//PATCH is used to update one or two out of data, instead of all data in json
+//similar than PUT but not used to evry single data
 app.patch('/api/users/:id', (req, res) => {
     const { body, params: { id } } = req
     const parsedId = parseInt(id)
