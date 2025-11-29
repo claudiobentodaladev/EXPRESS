@@ -16,20 +16,20 @@ const users = [
 
 //PATCH is used to update one or two out of data, instead of all data in json
 //similar than PUT but not used to evry single data
-app.patch('/api/users/:id', (req, res) => {
-    const { body, params: { id } } = req
+app.patch('/api/users/:id', (request, response) => {
+    const { body, params: { id } } = request
     const parsedId = parseInt(id)
 
     if (isNaN(parsedId)) {
-        return res.sendStatus(400)
+        return response.sendStatus(400)
     }
 
     const indexUserFound = users.findIndex(user => user.id === parsedId)
 
     if (indexUserFound === -1) {
-        return res.sendStatus(400)
+        return response.sendStatus(400)
     }
 
     users[indexUserFound] = { ...users[indexUserFound], ...body }
-    return res.sendStatus(200)
+    return response.sendStatus(200)
 })

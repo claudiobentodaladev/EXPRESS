@@ -14,21 +14,21 @@ app.listen(PORT, () => {
     -> Delegate the next middleware: next()
     -> Signal an error: next(err)
 */
-const handleID = (req, res, next) => {
-    const { params: { id } } = req
+const handleID = (request, response, next) => {
+    const { params: { id } } = request
     const parsedId = parseInt(id)
 
     if (isNaN(parsedId)) {
-        return res.sendStatus(400)
+        return response.sendStatus(400)
     }
 
     const indexUserFound = users.findIndex(user => user.id === parsedId)
 
     if (indexUserFound === -1) {
-        return res.sendStatus(404)
+        return response.sendStatus(404)
     }
 
-    req.indexUserFound = indexUserFound;
+    request.indexUserFound = indexUserFound;
 
     next();
 }
@@ -39,10 +39,10 @@ const users = [
     { id: 3, name: "dala", job: "doctor" },
 ];
 
-app.delete('/api/users/:id', handleID, (req, res) => {
-    const { indexUserFound } = req
+app.delete('/api/users/:id', handleID, (request, response) => {
+    const { indexUserFound } = request
 
     users.splice(indexUserFound, 1)
 
-    return res.sendStatus(200)
+    return response.sendStatus(200)
 })

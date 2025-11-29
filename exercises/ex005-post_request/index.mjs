@@ -14,13 +14,13 @@ const users = [
   { id: 3, name: "dala", job: "doctor" },
 ];
 
-app.post('/api/users', (req,res) => {
+app.post('/api/users', (request,response) => {
 
-    // POST REQUEST received by: req.body
-    const {body} = req
+    // POST REQUEST received by: request.body
+    const {body} = request
 
     const newUser = { id: users[users.length - 1].id + 1,...body}
     users.push(newUser)
     
-    return res.status(200).json(users)
+    return response.status(200).json(users)
 })

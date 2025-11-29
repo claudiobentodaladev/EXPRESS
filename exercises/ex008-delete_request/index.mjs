@@ -15,21 +15,21 @@ const users = [
 ];
 
 //DELETE is used to delete data
-app.delete('/api/users/:id', (req, res) => {
-    const { params: { id } } = req
+app.delete('/api/users/:id', (request, response) => {
+    const { params: { id } } = request
 
     const parsedId = parseInt(id)
 
     if (isNaN(parsedId)) {
-        return res.sendStatus(400)
+        return response.sendStatus(400)
     }
 
     const indexUserFound = users.findIndex(user => user.id === parsedId)
 
     if (indexUserFound === -1) {
-        return res.sendStatus(400)
+        return response.sendStatus(400)
     }
 
     users.splice(indexUserFound, 1)
-    return res.sendStatus(200)
+    return response.sendStatus(200)
 })
