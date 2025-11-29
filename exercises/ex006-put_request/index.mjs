@@ -14,6 +14,7 @@ const users = [
     { id: 3, name: "dala", job: "doctor" },
 ];
 
+//PUT is used to update evry single data in json (except ID)
 app.put('/api/users/:id', (request, response) => {
    const { params: { id } } = request
 
