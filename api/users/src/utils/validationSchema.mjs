@@ -22,6 +22,34 @@ export const createUser = {
     }
 }
 
+export const credetials = {
+    email: {
+        isString: {
+            errorMessage: "filter must be string"
+        },
+        notEmpty: {
+            errorMessage: "filter must not be empty"
+        },
+        isEmail: {
+            errorMessage: "must be a validate email adress"
+        }
+    },
+    password: {
+        isString: {
+            errorMessage: "filter must be string"
+        },
+        notEmpty: {
+            errorMessage: "filter must not be empty"
+        },
+        isLength: {
+            options: {
+                min: 3
+            },
+            errorMessage: `must be legth min 3`
+        }
+    }
+}
+
 export const query = {
     filter: {
         isString: {

@@ -1,5 +1,5 @@
 import express from "express";
-import router from "./routes/indexRoutes.mjs";
+import router from "./routes/index.routes.mjs";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,5 +12,9 @@ app.listen(PORT, () => {
 });
 
 app.get("/", (request, response) => {
+    if (!request.session.visited) {
+        request.session.visited = true;
+    }
+
     return response.send("API is working!");
 });
