@@ -1,46 +1,41 @@
 import { Router } from "express";
 import session from "express-session";
-import { users } from "../utils/constants.mjs";
+import passport from "passport";
+import "../auth/local.stategies.mjs";
+import { ensureAuth } from "../utils/middlewares.mjs";
 
 const router = Router();
 
 router.use(session({
     secret: "helloC",
-    saveUninitialized: false, // boolean: empty session(no data) must be saved in the server
-    resave: false, // boolean: session will be saved again in the server even if there's no modifications
-    cookie: { // cookie sets
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
         maxAge: 1000 * 60 * 60
     }
-}))
+}));
 
-router.post("/api/auth", (request, response) => {
-    const { email, password } = request.body;
+router.use(passport.initialize());
+router.use(passport.session());
 
-    const foundUser = users.find(user => user.email === email)
+router.get("/api/auth/", ensureAuth,(request, response) => {
+    const {user} = request
 
-    if (!foundUser || foundUser.password != password) {
-        return response.status(401).json({ msg: "BAD CREDENTIAL!" })
-    }
-
-    request.session.user = foundUser;
-
-    return response.status(200).json(foundUser)
+    return response.status(200).json(user)
 })
 
-router.get("/api/auth/status", (request, response) => {
-    if (!request.session.user) {
-        return response.status(401).json({ msg: "NOT AUTHENTICATED" })
-    }
+router.post("/api/auth",passport.authenticate("local"),(request, response) => {
+    return response.sendStatus(200)
+})
 
-    request.sessionStore.get(request.session.id, (err, sessionData) => {
+router.post("/api/auth/logout", ensureAuth,(request, response) => {
+    request.logOut((err) => {
         if (err) {
-            console.log(err);
-            throw err;
+            return response.sendStatus(400)
         }
-        console.log(sessionData)
+        return response.sendStatus(200)
     })
-
-    return response.status(200).json(request.session.user)
 })
+
 
 export default router;
