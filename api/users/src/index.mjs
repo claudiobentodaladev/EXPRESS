@@ -1,4 +1,5 @@
 import express from "express";
+import "./mongodb/connection/database.mjs";
 import router from "./routes/index.routes.mjs";
 
 const app = express();

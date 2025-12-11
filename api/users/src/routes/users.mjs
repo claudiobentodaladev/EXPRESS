@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { checkSchema, validationResult, matchedData } from "express-validator";
-import { createUser, query } from "../utils/validationSchema.mjs";
+import { createUser, credetials, query } from "../utils/validationSchema.mjs";
 import { handleID } from "../utils/middlewares.mjs";
 import { users } from "../utils/constants.mjs";
+import { User } from "../mongodb/schema/user.schema.mjs";
 
 const router = Router()
 
@@ -40,7 +41,7 @@ router.get('/api/users', checkSchema(query),
     }
 )
 
-router.post('/api/users', checkSchema(createUser), (request, response) => {
+router.post('/api/users', checkSchema(createUser), checkSchema(credetials), async (request, response) => {
 
     const result = validationResult(request)
     if (!result.isEmpty()) {
@@ -49,10 +50,14 @@ router.post('/api/users', checkSchema(createUser), (request, response) => {
 
     const data = matchedData(request)
 
-    const newUser = { id: users[users.length - 1].id + 1, ...data }
-    users.push(newUser)
+    try {
+        const insertedUser = await new User(data).save()
+        return response.status(201).json(insertedUser)
 
-    return response.status(201).json(newUser)
+    } catch (err) {
+        console.log(err)
+        return response.sendStatus(400)
+    }
 })
 
 router.put('/api/users/:id', handleID, (request, response) => {

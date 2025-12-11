@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
-import { users } from "../utils/constants.mjs";
+import { User } from "../mongodb/schema/user.schema.mjs";
 
 passport.serializeUser((user, done) => {
     console.log(`Inside of serialize user! | ${user}`)
@@ -8,10 +8,10 @@ passport.serializeUser((user, done) => {
     done(null, user.id)
 })
 
-passport.deserializeUser((id, done) => {
+passport.deserializeUser(async (id, done) => {
     console.log(`Inside of deserialize user! | user ID: ${id}`)
     try {
-        const foundUser = users.find(user => user.id === id)
+        const foundUser = await User.findById(id)
         if (!foundUser) {
             throw new Error("User not found!");
         }
@@ -22,10 +22,10 @@ passport.deserializeUser((id, done) => {
 })
 
 export default passport.use(
-    new Strategy((username, password, done) => {
+    new Strategy(async (username, password, done) => {
         console.log(`Username: ${username} | Passord: ${password}`)
         try {
-            const foundUser = users.find(user => user.username = username)
+            const foundUser = await User.findOne({username: username})
 
             if (!foundUser) {
                 throw new Error("user not found!");

@@ -17,6 +17,11 @@ export const createUser = {
     job: {
         isString: {
             errorMessage: "name must be a string"
+        }
+    },
+    username: {
+        isString: {
+            errorMessage: "name must be a string"
         },
         notEmpty: true
     }
