@@ -1,6 +1,7 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
 import { User } from "../mongodb/schema/user.schema.mjs";
+import { comparePassword } from "./hashPassword.mjs";
 
 passport.serializeUser((user, done) => {
     console.log(`Inside of serialize user! | ${user}`)
@@ -25,13 +26,13 @@ export default passport.use(
     new Strategy(async (username, password, done) => {
         console.log(`Username: ${username} | Passord: ${password}`)
         try {
-            const foundUser = await User.findOne({username: username})
+            const foundUser = await User.findOne({ username: username })
 
             if (!foundUser) {
                 throw new Error("user not found!");
             }
 
-            if (foundUser.password !== password) {
+            if (!comparePassword(password, foundUser.password)) {
                 throw new Error("password is wrong!");
             }
 

@@ -4,6 +4,7 @@ import { createUser, credetials, query } from "../utils/validationSchema.mjs";
 import { handleID } from "../utils/middlewares.mjs";
 import { users } from "../utils/constants.mjs";
 import { User } from "../mongodb/schema/user.schema.mjs";
+import { hashPassword } from "../auth/hashPassword.mjs";
 
 const router = Router()
 
@@ -14,31 +15,30 @@ router.get('/api/users/:id', handleID, (request, response) => {
 
     return response.status(200).json(filteredUsers)
 })
-router.get('/api/users', checkSchema(query),
-    (request, response) => {
+router.get('/api/users', checkSchema(query), (request, response) => {
 
-        const result = validationResult(request)
+    const result = validationResult(request)
 
-        if (!result.isEmpty()) {
-            return response.status(400).json(result)
-        }
-
-        const { query: { filter, value } } = request
-
-        if (["name", "job"].includes(filter)) {
-            const indexUserFound = users.findIndex(user => user[filter] === value)
-
-            if (indexUserFound === -1) {
-                return response.sendStatus(404)
-            }
-
-            const filteredUsers = users.filter(user => user[filter] === value)
-            return response.status(200).json(filteredUsers)
-        }
-
-        return response.status(400).json(users)
-
+    if (!result.isEmpty()) {
+        return response.status(400).json(result)
     }
+
+    const { filter, value } = request.query;
+
+    if (["name", "job"].includes(filter)) {
+        const indexUserFound = users.findIndex(user => user[filter] === value)
+
+        if (indexUserFound === -1) {
+            return response.sendStatus(404)
+        }
+
+        const filteredUsers = users.filter(user => user[filter] === value)
+        return response.status(200).json(filteredUsers)
+    }
+
+    return response.status(400).json(users)
+
+}
 )
 
 router.post('/api/users', checkSchema(createUser), checkSchema(credetials), async (request, response) => {
@@ -48,8 +48,8 @@ router.post('/api/users', checkSchema(createUser), checkSchema(credetials), asyn
         return response.status(400).send({ error: result.array() })
     }
 
-    const data = matchedData(request)
-
+    const data = matchedData(request);
+    data.password = hashPassword(data.password);
     try {
         const insertedUser = await new User(data).save()
         return response.status(201).json(insertedUser)
