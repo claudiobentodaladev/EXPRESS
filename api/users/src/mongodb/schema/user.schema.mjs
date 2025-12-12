@@ -1,4 +1,4 @@
-import mongoose,{model as createCollection} from "mongoose";
+import mongoose, { model as createCollection } from "mongoose";
 
 const userSchema = new mongoose.Schema({
     name: mongoose.Schema.Types.String,

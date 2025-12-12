@@ -56,7 +56,7 @@ export const credetials = {
 }
 
 export const query = {
-    filter: {
+    username: {
         isString: {
             errorMessage: "filter must be string"
         },
@@ -65,10 +65,9 @@ export const query = {
         },
         isLength: {
             options: {
-                min: 3,
-                max: 12
+                min: 3
             },
-            errorMessage: "must be legth between 3-12 character"
+            errorMessage: "must be legth between min 3 character"
         }
     }
 }
