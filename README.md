@@ -169,6 +169,12 @@ Build professional and functional APIs with Express.js while documenting the lea
 
 ---
 
+## 🎓 Recommended Courses
+
+- [Anson - Express JS Full Tutorial Playlist 2024](https://www.youtube.com/playlist?list=PL_cUvD4qzbkwjmjy-KjbieZ8J9cGwxZpC)
+
+---
+
 ## 🌍 Contributions
 
 Suggestions and improvements are welcome.
