@@ -37,12 +37,14 @@ router.get("/api/auth/status", (request, response) => {
         return response.status(401).json({ msg: "NOT AUTHENTICATED" })
     }
 
-    request.sessionStore.get(request.session.id, (err, sessionData) => {
+    request.sessionStore.get(request.sessionID, (err, sessionData) => {
         if (err) {
             console.log(err);
             throw err;
         }
+        console.log('=============SESSION STORE=============')
         console.log(sessionData)
+        console.log('=======================================')
     })
 
     return response.status(200).json(request.session.user)
